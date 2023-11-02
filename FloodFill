@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<int>>vis;
+
+    void floodfill(vector<vector<int>>& gr,int ck,int x = 0,int y = 0)
+    {
+        if(x<0 || y<0 || x>=gr.size() || y>=gr[0].size() || gr[x][y]>ck || vis[x][y])return ;
+        vis[x][y] = 10;
+        floodfill(gr,ck,x+1,y);
+        floodfill(gr,ck,x,y+1);
+        floodfill(gr,ck,x-1,y);
+        floodfill(gr,ck,x,y-1);
+    }
+    int swimInWater(vector<vector<int>>& gr) {
+        int l = 0,r = 2500,ans = 10000;
+        vis.resize(gr.size()+1);
+            for(int i = 0;i<=gr.size();i++)vis[i].resize(gr[0].size()+1,0);
+        while(l<=r){
+            int m = (l+r)/2;
+            for(int i = 0;i<vis.size();i++)for(int j = 0;j<vis[0].size();j++)vis[i][j] = 0;
+            floodfill(gr,m);
+            // cout<<vis[gr.size()-1][gr[0].size()-1]<<'\n';
+            if(vis[gr.size()-1][gr[0].size()-1]==10){
+                ans = m;
+                r = m-1;
+            }
+            else{
+                l = m+1;
+            }
+        }
+        return ans;
+    }
+};
